@@ -37,8 +37,11 @@ function getTimeAgo(dateString: string) {
 
 export default function Reviews() {
   return (
-    <section id="recenzije" className="py-24 bg-zinc-900 relative border-y border-zinc-800/50">
-      <div className="container mx-auto px-6">
+    <section
+      id="recenzije"
+      className="relative overflow-hidden py-24 border-b border-zinc-800/50 bg-[linear-gradient(to_bottom,#09090b_0%,#0d0d10_22%,#18181b_100%)]"
+    >
+      <div className="container relative mx-auto px-6">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-red-600 font-semibold tracking-wider uppercase mb-2">Iskustva Klijenata</h2>
           <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">Šta kažu o nama</h3>

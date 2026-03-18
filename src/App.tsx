@@ -23,9 +23,9 @@ export default function App() {
         <Hero />
         <Services />
         <AutoParts />
+        <Reviews />
         <About />
         <Location />
-        <Reviews />
         <Gallery />
         <Contact />
       </main>

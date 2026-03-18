@@ -1,12 +1,12 @@
 ﻿import { motion } from 'motion/react';
 
 const images = [
-  "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=1000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1625047509168-a7026f36de04?q=80&w=1000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1503375894314-47649a189371?q=80&w=1000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1632823462943-26f0b6d450a5?q=80&w=1000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1599256621730-535171e28e50?q=80&w=1000&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1493238792000-8113da705763?q=80&w=1000&auto=format&fit=crop"
+  new URL('../../images/1.jpg', import.meta.url).href,
+  new URL('../../images/2.jpg', import.meta.url).href,
+  new URL('../../images/3.jpg', import.meta.url).href,
+  new URL('../../images/4.jpg', import.meta.url).href,
+  new URL('../../images/5.jfif', import.meta.url).href,
+  new URL('../../images/6.jpeg', import.meta.url).href,
 ];
 
 export default function Gallery() {

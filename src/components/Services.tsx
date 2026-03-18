@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import {
   Activity,
@@ -15,6 +15,7 @@ import {
   Search,
   ChevronLeft,
   ChevronRight,
+  Phone,
 } from 'lucide-react';
 
 const services = [
@@ -160,7 +161,7 @@ export default function Services() {
               Naše Usluge
             </h2>
             <p className="text-lg font-light text-zinc-300 md:text-xl">
-              Vrhunska usluga, kvaliteta koja se prepoznaje.
+              Kvaliteta koja se prepoznaje.
             </p>
             <div className="mt-6 flex items-center justify-center gap-3">
               <span className="h-px w-10 bg-zinc-700" />
@@ -236,21 +237,15 @@ export default function Services() {
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-              <div className="absolute bottom-0 left-0 flex w-full flex-col justify-end p-6 md:p-8">
+                            <div className="absolute bottom-0 left-0 flex w-full flex-col justify-end p-6 md:p-8">
                 <h4 className="mb-2 text-3xl font-bold text-white">{service.title}</h4>
-
-                <div className="flex gap-3">
+                <div>
                   <a
                     href="#kontakt"
-                    className="flex-1 rounded-xl bg-red-600 py-3.5 text-center font-semibold text-white transition-colors hover:bg-red-700"
+                    className="group inline-flex items-center justify-center gap-3 rounded-full bg-red-600 px-7 py-3.5 font-medium text-white transition-all duration-300 hover:bg-red-700 shadow-[0_0_20px_rgba(220,38,38,0.2)] hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]"
                   >
-                    Zatraži ponudu
-                  </a>
-                  <a
-                    href="#kontakt"
-                    className="flex-1 rounded-xl bg-white/10 py-3.5 text-center font-semibold text-white backdrop-blur-md transition-colors hover:bg-white/20"
-                  >
-                    Saznaj više
+                    <Phone className="h-4 w-4" />
+                    <span>Zatraži ponudu</span>
                   </a>
                 </div>
               </div>
@@ -274,3 +269,5 @@ export default function Services() {
     </section>
   );
 }
+
+

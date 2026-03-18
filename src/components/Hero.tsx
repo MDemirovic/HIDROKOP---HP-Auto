@@ -3,7 +3,7 @@ import { Phone, ArrowRight } from 'lucide-react';
 
 export default function Hero() {
   return (
-    <section id="pocetna" className="relative h-screen w-full flex items-center overflow-hidden">
+    <section id="pocetna" className="relative w-full overflow-hidden pb-16 pt-32 md:flex md:h-screen md:items-center md:py-0">
       {/* Background Image */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img 
@@ -14,10 +14,11 @@ export default function Hero() {
         {/* Cinematic gradient: darkens only the left side (and bottom on mobile) so text is readable, leaving the car visible */}
         <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent w-full md:w-3/4"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent md:hidden"></div>
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent via-zinc-950/70 to-zinc-950 md:h-40"></div>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 flex flex-col items-start justify-center h-full pt-10 pb-16">
+      <div className="relative z-10 container mx-auto flex flex-col items-start justify-center px-6 md:h-full md:pt-10 md:pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -25,7 +26,7 @@ export default function Hero() {
           className="max-w-3xl w-full text-left"
         >
           {/* Small Label */}
-          <div className="flex items-center gap-4 mb-6">
+          <div className="mb-6 flex items-center gap-4">
             <div className="w-8 h-[2px] bg-red-600"></div>
             <span className="text-red-500 text-sm md:text-base font-bold tracking-[0.2em] uppercase">
               Hidrokop HP Auto
@@ -35,7 +36,7 @@ export default function Hero() {
           {/* Headline */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 tracking-tight leading-[1.1]">
             Autoservis i prodaja <br className="hidden md:block" />
-            <span className="text-zinc-400 font-light">autodijelova.</span>
+            <span>autodijelova.</span>
           </h1>
           
           {/* Supporting Text */}
@@ -66,4 +67,3 @@ export default function Hero() {
     </section>
   );
 }
-

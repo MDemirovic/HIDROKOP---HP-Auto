@@ -1,5 +1,4 @@
 ﻿import { useEffect, useRef, useState } from 'react';
-import { motion } from 'motion/react';
 import {
   Activity,
   Wrench,
@@ -151,24 +150,17 @@ export default function Services() {
     <section id="usluge" className="relative overflow-hidden bg-zinc-950 py-24">
       <div className="container mx-auto px-6">
         <div className="mx-auto mb-10 max-w-3xl text-center md:mb-14">
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
+          <div data-gsap="reveal" data-y="14">
             <h2 className="mb-4 bg-gradient-to-b from-white to-zinc-300 bg-clip-text text-5xl font-bold tracking-tight text-transparent md:text-6xl">
               Naše Usluge
             </h2>
-            <p className="text-lg font-light text-zinc-300 md:text-xl">
-              Kvaliteta koja se prepoznaje.
-            </p>
+            <p className="text-lg font-light text-zinc-300 md:text-xl">Kvaliteta koja se prepoznaje.</p>
             <div className="mt-6 flex items-center justify-center gap-3">
               <span className="h-px w-10 bg-zinc-700" />
               <span className="h-2 w-2 rounded-full bg-red-500/80" />
               <span className="h-px w-10 bg-zinc-700" />
             </div>
-          </motion.div>
+          </div>
         </div>
 
         <div className="mb-6 hidden justify-end gap-4 md:flex">
@@ -237,12 +229,12 @@ export default function Services() {
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
-                            <div className="absolute bottom-0 left-0 flex w-full flex-col justify-end p-6 md:p-8">
+              <div className="absolute bottom-0 left-0 flex w-full flex-col justify-end p-6 md:p-8">
                 <h4 className="mb-2 text-3xl font-bold text-white">{service.title}</h4>
                 <div>
                   <a
                     href="#kontakt"
-                    className="group inline-flex items-center justify-center gap-3 rounded-full bg-red-600 px-7 py-3.5 font-medium text-white transition-all duration-300 hover:bg-red-700 shadow-[0_0_20px_rgba(220,38,38,0.2)] hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]"
+                    className="group inline-flex items-center justify-center gap-3 rounded-full bg-red-600 px-7 py-3.5 font-medium text-white shadow-[0_0_20px_rgba(220,38,38,0.2)] transition-all duration-300 hover:bg-red-700 hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]"
                   >
                     <Phone className="h-4 w-4" />
                     <span>Zatraži ponudu</span>
@@ -269,5 +261,3 @@ export default function Services() {
     </section>
   );
 }
-
-

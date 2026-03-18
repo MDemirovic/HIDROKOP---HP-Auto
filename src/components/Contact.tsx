@@ -1,5 +1,4 @@
 ﻿import { useState, type ChangeEvent, type FocusEvent } from 'react';
-import { motion } from 'motion/react';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 
 export default function Contact() {
@@ -93,104 +92,96 @@ export default function Contact() {
   };
 
   return (
-    <section id="kontakt" className="py-24 bg-zinc-950 relative">
+    <section id="kontakt" className="relative bg-zinc-950 py-24">
       <div className="container mx-auto px-6">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <h2 className="text-red-600 font-semibold tracking-wider uppercase mb-2">Kontakt</h2>
-          <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">Tu smo za vas i vaš auto</h3>
+        <div className="mx-auto mb-16 max-w-2xl text-center" data-gsap="reveal" data-y="20">
+          <h2 className="mb-2 text-red-600 font-semibold uppercase tracking-wider">Kontakt</h2>
+          <h3 className="mb-4 text-3xl font-bold text-white md:text-4xl">Tu smo za vas i vaš auto</h3>
           <p className="text-zinc-400">Rezervirajte termin, postavite pitanje ili nas posjetite na našoj lokaciji.</p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-12 max-w-6xl mx-auto">
+        <div className="mx-auto flex max-w-6xl flex-col gap-12 lg:flex-row">
           {/* Contact Info */}
-          <motion.div
-            className="lg:w-1/3 space-y-8"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-2xl h-full space-y-8">
-              <div className="flex gap-4 items-start">
-                <div className="w-12 h-12 bg-zinc-800 rounded-full flex items-center justify-center text-red-500 shrink-0">
-                  <Phone className="w-5 h-5" />
+          <div data-gsap="reveal" data-x="-30" className="space-y-8 lg:w-1/3">
+            <div className="h-full space-y-8 rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
+              <div className="flex items-start gap-4">
+                <div className="h-12 w-12 shrink-0 rounded-full bg-zinc-800 text-red-500 flex items-center justify-center">
+                  <Phone className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold mb-1">Telefon</h4>
-                  <a href="tel:051642111" className="text-zinc-400 hover:text-red-500 transition-colors">051 642 111</a>
+                  <h4 className="mb-1 font-semibold text-white">Telefon</h4>
+                  <a href="tel:051642111" className="text-zinc-400 transition-colors hover:text-red-500">051 642 111</a>
                 </div>
               </div>
 
-              <div className="flex gap-4 items-start">
-                <div className="w-12 h-12 bg-zinc-800 rounded-full flex items-center justify-center text-red-500 shrink-0">
-                  <MapPin className="w-5 h-5" />
+              <div className="flex items-start gap-4">
+                <div className="h-12 w-12 shrink-0 rounded-full bg-zinc-800 text-red-500 flex items-center justify-center">
+                  <MapPin className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold mb-1">Adresa</h4>
+                  <h4 className="mb-1 font-semibold text-white">Adresa</h4>
                   <p className="text-zinc-400">Zametska ulica 28<br />51000, Rijeka</p>
                   <a
                     href="https://www.google.com/maps/search/?api=1&query=Hidrokop+-+HP+Auto,+Rijeka"
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="text-red-500 text-sm hover:underline mt-2 inline-block"
+                    className="mt-2 inline-block text-sm text-red-500 hover:underline"
                   >
                     Prikaži na mapi
                   </a>
                 </div>
               </div>
 
-              <div className="flex gap-4 items-start">
-                <div className="w-12 h-12 bg-zinc-800 rounded-full flex items-center justify-center text-red-500 shrink-0">
-                  <Clock className="w-5 h-5" />
+              <div className="flex items-start gap-4">
+                <div className="h-12 w-12 shrink-0 rounded-full bg-zinc-800 text-red-500 flex items-center justify-center">
+                  <Clock className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold mb-1">Radno vrijeme</h4>
+                  <h4 className="mb-1 font-semibold text-white">Radno vrijeme</h4>
                   <p className="text-zinc-400">Pon - Pet: 08:00 - 16:00</p>
                   <p className="text-zinc-400">Subota: 08:00 - 14:00</p>
-                  <p className="text-zinc-500 text-sm mt-1">Nedjelja: Zatvoreno</p>
+                  <p className="mt-1 text-sm text-zinc-500">Nedjelja: Zatvoreno</p>
                 </div>
               </div>
 
-              <div className="flex gap-4 items-start">
-                <div className="w-12 h-12 bg-zinc-800 rounded-full flex items-center justify-center text-red-500 shrink-0">
-                  <Mail className="w-5 h-5" />
+              <div className="flex items-start gap-4">
+                <div className="h-12 w-12 shrink-0 rounded-full bg-zinc-800 text-red-500 flex items-center justify-center">
+                  <Mail className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-white font-semibold mb-1">Email</h4>
-                  <a href="mailto:hidrokopdoo@gmail.com" className="text-zinc-400 hover:text-red-500 transition-colors">hidrokopdoo@gmail.com</a>
+                  <h4 className="mb-1 font-semibold text-white">Email</h4>
+                  <a href="mailto:hidrokopdoo@gmail.com" className="text-zinc-400 transition-colors hover:text-red-500">
+                    hidrokopdoo@gmail.com
+                  </a>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Contact Form */}
-          <motion.div
-            className="lg:w-2/3"
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <form className="bg-zinc-900 border border-zinc-800 p-8 rounded-2xl space-y-6" onSubmit={(e) => e.preventDefault()}>
-              <h3 className="text-2xl font-bold text-white mb-6">Zatraži termin ili ponudu</h3>
+          <div data-gsap="reveal" data-x="30" data-delay="0.04" className="lg:w-2/3">
+            <form className="space-y-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-8" onSubmit={(e) => e.preventDefault()}>
+              <h3 className="mb-6 text-2xl font-bold text-white">Zatraži termin ili ponudu</h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <label htmlFor="name" className="text-sm font-medium text-zinc-400">Ime i prezime *</label>
-                  <input type="text" id="name" required className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="Vaše ime" />
+                  <input type="text" id="name" required className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-white transition-colors focus:border-red-500 focus:outline-none" placeholder="Vaše ime" />
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="phone" className="text-sm font-medium text-zinc-400">Broj telefona *</label>
-                  <input type="tel" id="phone" required className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="051 642 111" />
+                  <input type="tel" id="phone" required className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-white transition-colors focus:border-red-500 focus:outline-none" placeholder="051 642 111" />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <label htmlFor="car" className="text-sm font-medium text-zinc-400">Marka i model vozila *</label>
-                  <input type="text" id="car" required className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors" placeholder="Npr. VW Golf 7 1.6 TDI" />
+                  <input type="text" id="car" required className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-white transition-colors focus:border-red-500 focus:outline-none" placeholder="Npr. VW Golf 7 1.6 TDI" />
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="service" className="text-sm font-medium text-zinc-400">Vrsta usluge</label>
-                  <select id="service" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors appearance-none">
+                  <select id="service" className="w-full appearance-none rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-white transition-colors focus:border-red-500 focus:outline-none">
                     <option value="mali-servis">Mali servis</option>
                     <option value="veliki-servis">Veliki servis</option>
                     <option value="dijagnostika">Dijagnostika</option>
@@ -212,7 +203,7 @@ export default function Contact() {
                   onBlur={handleDateBlur}
                   maxLength={10}
                   aria-invalid={dateError ? 'true' : 'false'}
-                  className={`w-full bg-zinc-950 border rounded-lg px-4 py-3 text-white focus:outline-none transition-colors ${
+                  className={`w-full rounded-lg border bg-zinc-950 px-4 py-3 text-white transition-colors focus:outline-none ${
                     dateError ? 'border-red-500 focus:border-red-500' : 'border-zinc-800 focus:border-red-500'
                   }`}
                 />
@@ -224,17 +215,17 @@ export default function Contact() {
                 <textarea
                   id="message"
                   rows={4}
-                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors resize-none"
+                  className="w-full resize-none rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-white transition-colors focus:border-red-500 focus:outline-none"
                   placeholder="Opišite problem ili ostavite dodatnu napomenu..."
                 ></textarea>
               </div>
 
-              <button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
-                <Send className="w-5 h-5" />
+              <button type="submit" className="flex w-full items-center justify-center gap-2 rounded-lg bg-red-600 py-4 font-medium text-white transition-colors hover:bg-red-700">
+                <Send className="h-5 w-5" />
                 Pošalji upit
               </button>
             </form>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

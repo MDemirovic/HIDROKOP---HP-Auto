@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import {
   Activity,
@@ -35,6 +35,9 @@ const services = [
 export default function Services() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
   const getCards = () => {
     if (!scrollRef.current) return [] as HTMLElement[];
@@ -65,13 +68,34 @@ export default function Services() {
   const handleScroll = () => {
     if (!scrollRef.current) return;
     setActiveIndex(getCenteredIndex());
+    const maxLeft = Math.max(0, scrollRef.current.scrollWidth - scrollRef.current.clientWidth);
+    const epsilon = 2;
+    setCanScrollLeft(scrollRef.current.scrollLeft > epsilon);
+    setCanScrollRight(scrollRef.current.scrollLeft < maxLeft - epsilon);
   };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const refresh = () => {
+      const maxLeft = Math.max(0, el.scrollWidth - el.clientWidth);
+      const epsilon = 2;
+      setCanScrollLeft(el.scrollLeft > epsilon);
+      setCanScrollRight(el.scrollLeft < maxLeft - epsilon);
+      setActiveIndex(getCenteredIndex());
+    };
+
+    refresh();
+    window.addEventListener('resize', refresh);
+    return () => window.removeEventListener('resize', refresh);
+  }, []);
 
   const getCurrentIndex = () => {
     return getCenteredIndex();
   };
 
-  const goToIndex = (index: number) => {
+  const goToIndex = (index: number, withAnimation = false) => {
     if (!scrollRef.current) return;
     const cards = getCards();
     if (!cards.length) return;
@@ -83,6 +107,23 @@ export default function Services() {
     const targetLeft = Math.max(0, Math.min(rawLeft, maxLeft));
 
     setActiveIndex(clamped);
+
+    if (withAnimation) {
+      const targetCard = cardRefs.current[clamped];
+      if (targetCard) {
+        targetCard.animate(
+          [
+            { opacity: 0.84, transform: 'translateY(14px)' },
+            { opacity: 1, transform: 'translateY(0px)' },
+          ],
+          {
+            duration: 450,
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+          }
+        );
+      }
+    }
+
     scrollRef.current.scrollTo({
       left: targetLeft,
       behavior: 'smooth',
@@ -90,15 +131,19 @@ export default function Services() {
   };
 
   const scroll = (direction: 'left' | 'right') => {
+    if (direction === 'left' && !canScrollLeft) return;
+    if (direction === 'right' && !canScrollRight) return;
     const current = getCurrentIndex();
     const target = direction === 'left' ? current - 1 : current + 1;
-    goToIndex(target);
+    goToIndex(target, true);
   };
 
   const scrollMobile = (direction: 'left' | 'right') => {
+    if (direction === 'left' && !canScrollLeft) return;
+    if (direction === 'right' && !canScrollRight) return;
     const current = getCurrentIndex();
     const target = direction === 'left' ? current - 1 : current + 1;
-    goToIndex(target);
+    goToIndex(target, true);
   };
 
   return (
@@ -128,14 +173,16 @@ export default function Services() {
         <div className="mb-6 hidden justify-end gap-4 md:flex">
           <button
             onClick={() => scroll('left')}
-            className="cursor-pointer rounded-full border border-zinc-800 bg-zinc-900 p-3 text-white transition-all hover:border-red-600 hover:bg-red-600"
+            disabled={!canScrollLeft}
+            className="cursor-pointer rounded-full border border-zinc-800 bg-zinc-900 p-3 text-white transition-all hover:border-red-600 hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:border-zinc-800 disabled:hover:bg-zinc-900"
             aria-label="Prethodna usluga"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
           <button
             onClick={() => scroll('right')}
-            className="cursor-pointer rounded-full border border-zinc-800 bg-zinc-900 p-3 text-white transition-all hover:border-red-600 hover:bg-red-600"
+            disabled={!canScrollRight}
+            className="cursor-pointer rounded-full border border-zinc-800 bg-zinc-900 p-3 text-white transition-all hover:border-red-600 hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:border-zinc-800 disabled:hover:bg-zinc-900"
             aria-label="Sljedeća usluga"
           >
             <ChevronRight className="h-5 w-5" />
@@ -148,15 +195,11 @@ export default function Services() {
           className="flex snap-x snap-mandatory gap-6 overflow-x-auto overflow-y-hidden pb-4 md:overflow-x-hidden md:snap-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {services.map((service, index) => (
-            <motion.div
+            <div
               key={service.title}
-              initial={false}
-              animate={
-                activeIndex === index
-                  ? { opacity: [0.84, 1], y: [14, 0] }
-                  : { opacity: 1, y: 0 }
-              }
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              ref={(el) => {
+                cardRefs.current[index] = el;
+              }}
               className="group relative h-[500px] w-[85vw] shrink-0 snap-center overflow-hidden rounded-3xl md:w-[380px]"
             >
               <div
@@ -167,7 +210,7 @@ export default function Services() {
                 <button
                   type="button"
                   onClick={() => scrollMobile('left')}
-                  disabled={activeIndex === 0}
+                  disabled={!canScrollLeft}
                   aria-label="Prethodna usluga"
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-700/80 bg-zinc-950/80 text-white backdrop-blur-sm transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-35"
                 >
@@ -176,7 +219,7 @@ export default function Services() {
                 <button
                   type="button"
                   onClick={() => scrollMobile('right')}
-                  disabled={activeIndex === services.length - 1}
+                  disabled={!canScrollRight}
                   aria-label="Sljedeća usluga"
                   className="flex h-9 w-9 items-center justify-center rounded-full border border-zinc-700/80 bg-zinc-950/80 text-white backdrop-blur-sm transition-transform active:scale-95 disabled:cursor-not-allowed disabled:opacity-35"
                 >
@@ -211,7 +254,7 @@ export default function Services() {
                   </a>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
@@ -219,7 +262,7 @@ export default function Services() {
           {services.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => goToIndex(idx)}
+              onClick={() => goToIndex(idx, true)}
               className={`h-2.5 rounded-full transition-all duration-300 ${
                 activeIndex === idx ? 'w-8 bg-white' : 'w-2.5 bg-zinc-700 hover:bg-zinc-500'
               }`}

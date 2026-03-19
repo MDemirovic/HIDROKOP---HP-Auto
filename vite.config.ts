@@ -5,9 +5,12 @@ import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
-  const repositoryName = process.env.GITHUB_REPOSITORY?.split('/')[1];
+  const repositoryName =
+    process.env.GITHUB_REPOSITORY?.split('/')[1] ??
+    env.VITE_GITHUB_PAGES_REPO ??
+    'HIDROKOP---HP-Auto';
   const pagesBase =
-    mode === 'production' && repositoryName ? `/${repositoryName}/` : '/';
+    mode === 'production' ? `/${repositoryName}/` : '/';
 
   return {
     base: pagesBase,

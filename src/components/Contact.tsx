@@ -1,6 +1,8 @@
 ﻿import { useState, type ChangeEvent, type FocusEvent } from 'react';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 
+import SectionHeading from './SectionHeading';
+
 export default function Contact() {
   const dateTemplate = 'dd/mm/yyyy';
   const [desiredDate, setDesiredDate] = useState(dateTemplate);
@@ -95,9 +97,14 @@ export default function Contact() {
     <section id="kontakt" className="relative bg-zinc-950 py-24">
       <div className="container mx-auto px-6">
         <div className="mx-auto mb-16 max-w-2xl text-center" data-gsap="reveal" data-y="20">
-          <h2 className="mb-2 text-red-600 font-semibold uppercase tracking-wider">Kontakt</h2>
-          <h3 className="mb-4 text-3xl font-bold text-white md:text-4xl">Tu smo za vas i vaš auto</h3>
-          <p className="text-zinc-400">Rezervirajte termin, postavite pitanje ili nas posjetite na našoj lokaciji.</p>
+          <SectionHeading
+            align="center"
+            title="Tu smo"
+            subtitle="za vaš auto"
+            inline
+            description="Rezervirajte termin, postavite pitanje ili nas posjetite na našoj lokaciji."
+            className="max-w-[760px]"
+          />
         </div>
 
         <div className="mx-auto flex max-w-6xl flex-col gap-12 lg:flex-row">

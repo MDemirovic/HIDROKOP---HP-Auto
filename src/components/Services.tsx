@@ -147,14 +147,14 @@ export default function Services() {
   };
 
   return (
-    <section id="usluge" className="relative overflow-hidden bg-zinc-950 py-24">
+    <section id="usluge" className="relative overflow-hidden bg-zinc-950 pb-24 pt-14 md:py-24">
       <div className="container mx-auto px-6">
-        <div className="mx-auto mb-10 max-w-3xl text-center md:mb-14">
-          <div data-gsap="reveal" data-y="14">
-            <h2 className="mb-4 bg-gradient-to-b from-white to-zinc-300 bg-clip-text text-4xl font-serif font-semibold leading-tight text-transparent md:text-6xl">
-              Naše Usluge
+        <div className="mx-auto mb-10 max-w-3xl md:mb-14">
+          <div data-gsap="reveal" data-y="14" className="flex flex-col items-center text-center">
+            <h2 className="mb-4 w-full text-center font-serif text-[2.75rem] leading-[1.02] font-semibold tracking-[0.015em] text-zinc-100 sm:text-[3.55rem] md:text-[4.35rem]">
+              Naše usluge
             </h2>
-            <p className="text-lg font-light text-zinc-300 md:text-xl">Kvaliteta koja se prepoznaje.</p>
+            <p className="text-center text-lg font-light text-zinc-300 md:text-xl">Kvaliteta koja se prepoznaje.</p>
             <div className="mt-6 flex items-center justify-center gap-3">
               <span className="h-px w-10 bg-zinc-700" />
               <span className="h-2 w-2 rounded-full bg-red-500/80" />

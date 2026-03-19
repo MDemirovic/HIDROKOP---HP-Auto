@@ -1,5 +1,7 @@
 ﻿import { CheckCircle2 } from 'lucide-react';
 
+import SectionHeading from './SectionHeading';
+
 export default function About() {
   const aboutPoints = [
     'Stručan tim sa certifikatima',
@@ -13,8 +15,12 @@ export default function About() {
       <div className="container relative mx-auto px-6">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16">
           <div data-gsap="reveal" data-x="50" className="w-full lg:order-2 lg:w-1/2">
-            <h2 className="mb-2 text-red-600 font-semibold uppercase tracking-wider">O Firmi</h2>
-            <h3 className="mb-6 text-3xl font-bold text-white md:text-4xl">Vaš pouzdan partner na cesti</h3>
+            <SectionHeading
+              title="Pouzdan partner"
+              subtitle="na cesti"
+              className="mb-6 max-w-[560px]"
+              titleClassName="md:text-[4.5rem]"
+            />
 
             <div className="hidden space-y-6 text-lg leading-relaxed text-zinc-400 lg:block">
               <p>

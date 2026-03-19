@@ -1,5 +1,7 @@
 ﻿import { MapPin } from 'lucide-react';
 
+import SectionHeading from './SectionHeading';
+
 export default function Location() {
   const mapUrl =
     'https://maps.google.com/maps?q=Hidrokop+-+HP+Auto,+Rijeka&t=&z=15&ie=UTF8&iwloc=&output=embed';
@@ -13,7 +15,7 @@ export default function Location() {
   return (
     <section
       id="lokacija"
-      className="relative overflow-hidden bg-zinc-950 pb-24 pt-14 md:py-28"
+      className="relative overflow-hidden bg-zinc-950 pb-14 pt-14 md:py-28"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-[56%] h-[34rem] w-[52rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-700/14 blur-[150px]" />
@@ -23,12 +25,14 @@ export default function Location() {
 
       <div className="container relative mx-auto px-6">
         <div className="mx-auto mb-8 max-w-3xl text-center md:mb-14" data-gsap="reveal" data-y="20">
-          <p className="mb-3 inline-flex rounded-full border border-red-500/40 bg-red-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.28em] text-red-300">
-            Lokacija
-          </p>
-          <h2 className="mb-6 text-4xl font-serif font-semibold leading-tight text-zinc-100 md:text-6xl">
-            Vaš servisni punkt u srcu Rijeke
-          </h2>
+          <SectionHeading
+            align="center"
+            title="Servisni punkt"
+            subtitle="u srcu Rijeke"
+            inline
+            className="max-w-[760px]"
+            titleClassName="md:max-w-none"
+          />
         </div>
 
         <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-zinc-950/70 shadow-[0_25px_85px_-35px_rgba(0,0,0,0.95)] backdrop-blur-sm">

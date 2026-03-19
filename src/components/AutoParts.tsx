@@ -2,7 +2,7 @@ import { Phone } from 'lucide-react';
 
 export default function AutoParts() {
   return (
-    <section id="autodijelovi" className="relative isolate overflow-hidden bg-zinc-950 py-24 md:py-32">
+    <section id="autodijelovi" className="relative isolate overflow-hidden bg-zinc-950 pb-14 pt-24 md:py-32">
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(120%_100%_at_84%_30%,rgba(185,28,28,0.28),rgba(9,9,11,0.97)_58%,#09090b_86%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:42px_42px] opacity-20" />

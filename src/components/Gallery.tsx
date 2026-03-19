@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import SectionHeading from './SectionHeading';
 
 const images = [
   new URL('../../images/1.jpg', import.meta.url).href,
@@ -33,12 +34,16 @@ export default function Gallery() {
 
   return (
     <>
-      <section className="relative bg-zinc-950 py-24">
+      <section className="relative bg-zinc-950 pb-24 pt-14 md:py-24">
         <div className="container mx-auto px-6">
           <div className="mx-auto mb-16 max-w-2xl text-center" data-gsap="reveal" data-y="20">
-            <h2 className="mb-2 font-semibold uppercase tracking-wider text-red-600">Galerija</h2>
-            <h3 className="mb-4 text-3xl font-bold text-white md:text-4xl">Zavirite u našu radionicu</h3>
-            <p className="text-zinc-400">Čistoća, red i profesionalan alat su osnova dobrog servisa.</p>
+            <SectionHeading
+              align="center"
+              title="Zavirite"
+              subtitle="u radionicu"
+              description="Čistoća, red i profesionalan alat su osnova dobrog servisa."
+              className="max-w-[760px]"
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">

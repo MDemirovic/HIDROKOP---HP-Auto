@@ -25,6 +25,7 @@ export default function App() {
     if (!pageRef.current) return;
 
     gsap.registerPlugin(ScrollTrigger);
+    const refreshScrollTriggers = () => ScrollTrigger.refresh();
 
     const ctx = gsap.context(() => {
       const revealItems = gsap.utils.toArray<HTMLElement>('[data-gsap="reveal"]');
@@ -73,7 +74,16 @@ export default function App() {
       }
     }, pageRef);
 
-    return () => ctx.revert();
+    const refreshTimeout = window.setTimeout(refreshScrollTriggers, 250);
+    window.addEventListener('load', refreshScrollTriggers);
+
+    void document.fonts?.ready.then(refreshScrollTriggers).catch(() => {});
+
+    return () => {
+      window.clearTimeout(refreshTimeout);
+      window.removeEventListener('load', refreshScrollTriggers);
+      ctx.revert();
+    };
   }, []);
 
   return (

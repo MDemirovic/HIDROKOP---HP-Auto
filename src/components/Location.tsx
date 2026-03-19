@@ -13,7 +13,7 @@ export default function Location() {
   return (
     <section
       id="lokacija"
-      className="relative overflow-hidden bg-zinc-950 py-28"
+      className="relative overflow-hidden bg-zinc-950 pb-24 pt-14 md:py-28"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-[56%] h-[34rem] w-[52rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-700/14 blur-[150px]" />
@@ -22,7 +22,7 @@ export default function Location() {
       </div>
 
       <div className="container relative mx-auto px-6">
-        <div className="mx-auto mb-14 max-w-3xl text-center" data-gsap="reveal" data-y="20">
+        <div className="mx-auto mb-8 max-w-3xl text-center md:mb-14" data-gsap="reveal" data-y="20">
           <p className="mb-3 inline-flex rounded-full border border-red-500/40 bg-red-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.28em] text-red-300">
             Lokacija
           </p>

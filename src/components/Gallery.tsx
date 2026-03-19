@@ -1,4 +1,6 @@
-﻿const images = [
+import { useEffect, useState } from 'react';
+
+const images = [
   new URL('../../images/1.jpg', import.meta.url).href,
   new URL('../../images/2.jpg', import.meta.url).href,
   new URL('../../images/3.jpg', import.meta.url).href,
@@ -8,38 +10,84 @@
 ];
 
 export default function Gallery() {
-  return (
-    <section className="relative bg-zinc-950 py-24">
-      <div className="container mx-auto px-6">
-        <div className="mx-auto mb-16 max-w-2xl text-center" data-gsap="reveal" data-y="20">
-          <h2 className="mb-2 text-red-600 font-semibold uppercase tracking-wider">Galerija</h2>
-          <h3 className="mb-4 text-3xl font-bold text-white md:text-4xl">Zavirite u našu radionicu</h3>
-          <p className="text-zinc-400">Čistoća, red i profesionalan alat su osnova dobrog servisa.</p>
-        </div>
+  const [activeImage, setActiveImage] = useState<string | null>(null);
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-          {images.map((src, index) => (
-            <div
-              key={index}
-              data-gsap="reveal"
-              data-scale="0.95"
-              data-y="16"
-              data-delay={`${index * 0.06}`}
-              className={`group relative overflow-hidden rounded-2xl ${index === 0 || index === 3 ? 'md:col-span-2 md:row-span-2' : ''}`}
-            >
-              <div className="aspect-[4/3] h-full w-full">
-                <img
-                  src={src}
-                  alt={`Galerija slika ${index + 1}`}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-zinc-950/20 transition-colors duration-500 group-hover:bg-transparent" />
-              </div>
-            </div>
-          ))}
+  useEffect(() => {
+    if (!activeImage) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setActiveImage(null);
+      }
+    };
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [activeImage]);
+
+  return (
+    <>
+      <section className="relative bg-zinc-950 py-24">
+        <div className="container mx-auto px-6">
+          <div className="mx-auto mb-16 max-w-2xl text-center" data-gsap="reveal" data-y="20">
+            <h2 className="mb-2 font-semibold uppercase tracking-wider text-red-600">Galerija</h2>
+            <h3 className="mb-4 text-3xl font-bold text-white md:text-4xl">Zavirite u našu radionicu</h3>
+            <p className="text-zinc-400">Čistoća, red i profesionalan alat su osnova dobrog servisa.</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+            {images.map((src, index) => (
+              <button
+                type="button"
+                key={index}
+                onClick={() => setActiveImage(src)}
+                data-gsap="reveal"
+                data-scale="0.95"
+                data-y="16"
+                data-delay={`${index * 0.06}`}
+                className={`group relative overflow-hidden rounded-2xl text-left ${
+                  index === 0 || index === 3 ? 'md:col-span-2 md:row-span-2' : ''
+                }`}
+                aria-label={`Otvori sliku ${index + 1} u galeriji`}
+              >
+                <div className="aspect-[4/3] h-full w-full">
+                  <img
+                    src={src}
+                    alt={`Galerija slika ${index + 1}`}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-zinc-950/20 transition-colors duration-500 group-hover:bg-transparent" />
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {activeImage ? (
+        <div
+          className="fixed inset-0 z-[120] flex items-center justify-center bg-black/82 px-4 py-8 backdrop-blur-md sm:px-8 md:px-12"
+          onClick={() => setActiveImage(null)}
+          aria-modal="true"
+          role="dialog"
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.12),transparent_55%)]" />
+          <img
+            src={activeImage}
+            alt="Povećana slika galerije"
+            className="relative z-10 max-h-[88vh] w-auto max-w-[min(100%,1200px)] rounded-2xl object-contain shadow-[0_35px_90px_rgba(0,0,0,0.7)]"
+            onClick={(event) => event.stopPropagation()}
+            referrerPolicy="no-referrer"
+          />
+        </div>
+      ) : null}
+    </>
   );
 }

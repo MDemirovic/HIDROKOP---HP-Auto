@@ -151,7 +151,7 @@ export default function Services() {
       <div className="container mx-auto px-6">
         <div className="mx-auto mb-10 max-w-3xl text-center md:mb-14">
           <div data-gsap="reveal" data-y="14">
-            <h2 className="mb-4 bg-gradient-to-b from-white to-zinc-300 bg-clip-text text-5xl font-bold tracking-tight text-transparent md:text-6xl">
+            <h2 className="mb-4 bg-gradient-to-b from-white to-zinc-300 bg-clip-text text-4xl font-serif font-semibold leading-tight text-transparent md:text-6xl">
               Naše Usluge
             </h2>
             <p className="text-lg font-light text-zinc-300 md:text-xl">Kvaliteta koja se prepoznaje.</p>

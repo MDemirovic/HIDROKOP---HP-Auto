@@ -1,97 +1,69 @@
-﻿import { Settings, Battery, Disc, Wrench, Phone } from 'lucide-react';
-
-const parts = [
-  {
-    icon: Settings,
-    title: 'Motorna ulja i filteri',
-    description: 'Vrhunska ulja i filteri za optimalan rad i dugovječnost vašeg motora.',
-  },
-  {
-    icon: Disc,
-    title: 'Kočioni sistemi',
-    description: 'Diskovi, pločice i kočiona tekućina renomiranih svjetskih proizvođača.',
-  },
-  {
-    icon: Battery,
-    title: 'Akumulatori i elektrika',
-    description: 'Pouzdani akumulatori i električni dijelovi za sve vremenske uslove.',
-  },
-  {
-    icon: Wrench,
-    title: 'Ovjes i upravljanje',
-    description: 'Amortizeri, opruge i dijelovi ovjesa za sigurnu i udobnu vožnju.',
-  },
-];
+import { Phone } from 'lucide-react';
 
 export default function AutoParts() {
   return (
-    <section id="autodijelovi" className="relative overflow-hidden bg-zinc-950 py-28">
+    <section id="autodijelovi" className="relative isolate overflow-hidden bg-zinc-950 py-24 md:py-32">
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute top-28 right-[18%] h-[26rem] w-[32rem] rounded-full bg-red-700/10 blur-[120px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:38px_38px] opacity-35" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_40%,rgba(120,20,20,0.16),rgba(9,9,11,0.98)_56%,#09090b_74%)]" />
-        <div className="absolute inset-x-0 top-0 h-56 bg-gradient-to-b from-zinc-950 via-zinc-950/95 to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(120%_100%_at_84%_30%,rgba(185,28,28,0.28),rgba(9,9,11,0.97)_58%,#09090b_86%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:42px_42px] opacity-20" />
+        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-zinc-950 via-zinc-950/95 to-transparent md:h-52" />
+        <div className="absolute inset-x-0 bottom-[-10rem] h-[24rem] bg-[radial-gradient(70%_100%_at_50%_0%,rgba(127,29,29,0.26),rgba(127,29,29,0.12)_38%,rgba(9,9,11,0)_78%)] blur-2xl" />
+        <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-b from-transparent via-zinc-950/55 to-zinc-950" />
       </div>
 
-      <div className="container relative mx-auto px-6">
-        <div className="mx-auto mb-14 max-w-3xl text-center" data-gsap="reveal" data-y="20">
-          <p className="mb-3 inline-flex rounded-full border border-red-500/40 bg-red-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.28em] text-red-300">
+      <div className="relative mx-auto max-w-[1320px] px-6 lg:pr-[50vw] xl:pr-[48vw]">
+        <div data-gsap="reveal" data-y="20" className="mb-10 flex max-w-[560px] flex-col gap-1 md:mb-14">
+          <h2 className="font-serif text-5xl leading-[0.92] font-semibold tracking-[0.03em] text-zinc-100 sm:text-6xl md:text-7xl lg:text-8xl">
             Trgovina
-          </p>
-          <h2 className="mb-5 text-4xl font-serif font-semibold leading-tight text-zinc-100 md:text-6xl">
-            Sve za vaš automobil na jednom mjestu
           </h2>
-          <p className="text-base text-zinc-400 md:text-lg">
-            Originalni i zamjenski autodijelovi uz stručan savjet i brzu dostupnost.
+          <p className="font-script text-5xl leading-[0.92] text-red-300 sm:text-6xl md:text-7xl lg:text-8xl">
+            autodijelova
           </p>
         </div>
 
-        <div data-gsap="reveal" data-y="30" className="mx-auto max-w-6xl">
-          <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
-            <div className="relative">
-              <img src="/back.png" alt="Trgovina autodijelova" className="h-full min-h-[360px] w-full object-cover" />
-            </div>
+        <div className="grid gap-8">
+          <div data-gsap="reveal" data-x="-30" className="relative z-20 max-w-[520px] lg:max-w-[430px] xl:max-w-[490px]">
+            <p className="text-base leading-relaxed text-zinc-200 md:text-lg">
+              Originalni i zamjenski dijelovi za većinu marki vozila, uz brz savjet i sigurnu nabavu bez čekanja.
+            </p>
+            <p className="mt-4 max-w-md border-l-2 border-red-500/70 pl-4 text-sm leading-relaxed text-zinc-400 md:text-base">
+              Tražite specifičan dio? Nazovite nas i odmah provjeravamo dostupnost za vaše vozilo.
+            </p>
 
-            <div>
-              <h3 className="text-2xl font-semibold text-white sm:text-3xl">Trgovina autodijelova</h3>
-              <p className="mt-4 max-w-xl leading-relaxed text-zinc-300">
-                U sklopu servisa nudimo i trgovinu autodijelova za većinu marki i modela vozila. Kod nas možete pronaći
-                originalne i kvalitetne zamjenske dijelove, uz stručan savjet prije kupnje.
-              </p>
-              <p className="mt-3 max-w-xl leading-relaxed text-zinc-400">
-                Fokusirani smo na pouzdanost, brzu nabavu i realne cijene. Većinu artikala možemo osigurati u kratkom
-                roku kako bi vaše vozilo što prije bilo spremno za cestu.
-              </p>
+            <a
+              href="tel:051642111"
+              className="mt-8 inline-flex items-center justify-center gap-2 rounded-full border border-red-400/55 bg-red-500/15 px-7 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-red-100 transition hover:border-red-300 hover:bg-red-500/25"
+            >
+              <Phone className="h-4 w-4" />
+              Nazovite trgovinu
+            </a>
+          </div>
 
-              <a
-                href="tel:051642111"
-                className="mt-7 inline-flex items-center justify-center gap-2 rounded-xl border border-red-400/45 bg-red-500/15 px-5 py-3 text-sm font-semibold uppercase tracking-[0.16em] text-red-200 transition hover:border-red-300 hover:bg-red-500/25"
-              >
-                <Phone className="h-4 w-4" />
-                Nazovite trgovinu
-              </a>
-
-              <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {parts.map((part) => {
-                  const Icon = part.icon;
-                  return (
-                    <li key={part.title} className="border-b border-zinc-800/80 pb-4">
-                      <div className="flex items-start gap-3">
-                        <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-red-500/12 text-red-300">
-                          <Icon className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <h4 className="text-sm font-semibold text-zinc-100 sm:text-base">{part.title}</h4>
-                          <p className="mt-1 text-sm leading-relaxed text-zinc-400">{part.description}</p>
-                        </div>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+          <div className="relative min-h-[320px] sm:min-h-[430px] lg:hidden">
+            <img
+              src="/auto3.png"
+              alt="Auto dijelovi"
+              className="h-full w-full object-contain drop-shadow-[0_24px_55px_rgba(0,0,0,0.6)]"
+            />
           </div>
         </div>
+      </div>
+
+      <div
+        data-gsap="reveal"
+        data-x="60"
+        className="pointer-events-none absolute right-0 bottom-[-2.5rem] hidden w-[68vw] max-w-[1160px] lg:block xl:bottom-[-4rem]"
+      >
+        <img
+          src="/auto3.png"
+          alt="Auto dijelovi"
+          className="h-auto w-full object-contain object-right drop-shadow-[0_34px_80px_rgba(0,0,0,0.68)]"
+        />
+      </div>
+
+      <div className="pointer-events-none absolute right-[5vw] bottom-[20%] hidden max-w-[240px] rounded-xl border border-red-500/30 bg-zinc-950/55 p-4 backdrop-blur-sm min-[1400px]:block">
+        <p className="text-xs uppercase tracking-[0.22em] text-red-300">Brza isporuka</p>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-200">Većina dijelova dostupna je isti dan ili unutar 24h.</p>
       </div>
     </section>
   );

@@ -37,6 +37,12 @@ function getTimeAgo(dateString: string) {
 export default function Reviews() {
   return (
     <section id="recenzije" className="relative overflow-hidden bg-zinc-950 py-24">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-x-0 -top-44 h-[26rem] bg-[radial-gradient(70%_100%_at_50%_100%,rgba(127,29,29,0.16),rgba(127,29,29,0.06)_42%,rgba(9,9,11,0)_80%)] blur-3xl" />
+        <div className="absolute left-1/2 top-[44%] h-[30rem] w-[58rem] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(circle,rgba(185,28,28,0.19),rgba(185,28,28,0.08)_38%,rgba(9,9,11,0)_74%)] blur-3xl" />
+        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-zinc-950/90 via-zinc-950/55 to-transparent" />
+      </div>
+
       <div className="container relative mx-auto px-6">
         <div data-gsap="reveal" data-y="20" className="mx-auto mb-16 max-w-2xl text-center">
           <h2 className="mb-2 text-red-600 font-semibold uppercase tracking-wider">Iskustva Klijenata</h2>

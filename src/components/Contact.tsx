@@ -307,7 +307,6 @@ export default function Contact() {
               <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
                 <div>
                   <h3 className="text-2xl font-bold text-white">Zatraži termin ili ponudu</h3>
-                  <p className="mt-1 text-sm text-zinc-400">Forma otvara vaš email s već popunjenim podacima.</p>
                 </div>
               </div>
 

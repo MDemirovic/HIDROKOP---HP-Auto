@@ -5,7 +5,12 @@ import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
+  const repositoryName = process.env.GITHUB_REPOSITORY?.split('/')[1];
+  const pagesBase =
+    mode === 'production' && repositoryName ? `/${repositoryName}/` : '/';
+
   return {
+    base: pagesBase,
     publicDir: 'public',
     plugins: [react(), tailwindcss()],
     define: {

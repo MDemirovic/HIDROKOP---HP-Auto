@@ -1,5 +1,7 @@
 ﻿import { Mail, Phone } from 'lucide-react';
 
+import { asset } from '../utils/asset';
+
 export default function Footer() {
   const privacyUrl = `${import.meta.env.BASE_URL}politika-privatnosti.html`;
   const termsUrl = `${import.meta.env.BASE_URL}uslovi-koristenja.html`;
@@ -11,7 +13,7 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-start gap-4">
             <div className="w-[64px] md:w-auto overflow-hidden">
               <img
-                src="/logo.png"
+                src={asset('logo.png')}
                 alt="Hidrokop-HP Auto Logo"
                 className="h-16 md:h-20 w-auto max-w-none"
               />

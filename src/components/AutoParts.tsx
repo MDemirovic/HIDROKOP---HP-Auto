@@ -1,5 +1,7 @@
 import { Phone } from 'lucide-react';
 
+import { asset } from '../utils/asset';
+
 export default function AutoParts() {
   return (
     <section id="autodijelovi" className="relative isolate overflow-hidden bg-zinc-950 pb-14 pt-24 md:py-32">
@@ -41,7 +43,7 @@ export default function AutoParts() {
 
           <div className="relative min-h-[320px] sm:min-h-[430px] lg:hidden">
             <img
-              src="/auto3.png"
+              src={asset('auto3.png')}
               alt="Auto dijelovi"
               className="h-full w-full object-contain drop-shadow-[0_24px_55px_rgba(0,0,0,0.6)]"
             />
@@ -55,7 +57,7 @@ export default function AutoParts() {
         className="pointer-events-none absolute right-0 bottom-[-2.5rem] hidden w-[68vw] max-w-[1160px] lg:block xl:bottom-[-4rem]"
       >
         <img
-          src="/auto3.png"
+          src={asset('auto3.png')}
           alt="Auto dijelovi"
           className="h-auto w-full object-contain object-right drop-shadow-[0_34px_80px_rgba(0,0,0,0.68)]"
         />

@@ -1,6 +1,7 @@
 ﻿import { CheckCircle2 } from 'lucide-react';
 
 import SectionHeading from './SectionHeading';
+import { asset } from '../utils/asset';
 
 export default function About() {
   const aboutPoints = [
@@ -46,7 +47,7 @@ export default function About() {
           <div data-gsap="reveal" data-x="-50" className="relative w-full lg:order-1 lg:w-1/2">
             <div className="relative overflow-hidden rounded-2xl shadow-2xl shadow-red-900/20">
               <img
-                src="/HPUlaz.png"
+                src={asset('HPUlaz.png')}
                 alt="Hidrokop-HP Auto Ulaz"
                 className="h-[500px] w-full object-cover object-[20%_center]"
                 referrerPolicy="no-referrer"

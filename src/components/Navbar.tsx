@@ -1,6 +1,7 @@
 ﻿import { useState } from 'react';
 import { Menu, X, Phone } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { asset } from '../utils/asset';
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -19,7 +20,7 @@ export default function Navbar() {
         <a href="#pocetna" className="flex items-center gap-2">
           <div className="w-[64px] md:w-auto overflow-hidden">
             <img 
-              src="/logo.png" 
+              src={asset('logo.png')} 
               alt="Hidrokop-HP Auto Logo" 
               className="h-16 md:h-20 w-auto max-w-none drop-shadow-2xl" 
             />

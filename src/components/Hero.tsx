@@ -1,12 +1,14 @@
 ﻿import { Phone, ArrowRight } from 'lucide-react';
 
+import { asset } from '../utils/asset';
+
 export default function Hero() {
   return (
     <section id="pocetna" className="relative w-full overflow-hidden pb-8 pt-32 md:flex md:h-screen md:items-center md:py-0">
       {/* Background Image */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img
-          src="/bg.png"
+          src={asset('bg.png')}
           alt="Auto Servis"
           className="absolute top-0 right-0 h-full w-[115%] max-w-none object-cover object-[70%_center] md:w-[106%] md:object-center"
         />

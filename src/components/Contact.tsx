@@ -1,96 +1,228 @@
-﻿import { useState, type ChangeEvent, type FocusEvent } from 'react';
+﻿import { useMemo, useState, type FormEvent } from 'react';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 
 import SectionHeading from './SectionHeading';
 
+type FormData = {
+  fullName: string;
+  phone: string;
+  carModel: string;
+  service: string;
+  message: string;
+};
+
+type DateParts = {
+  day: string;
+  month: string;
+  year: string;
+};
+
+type FormErrors = Partial<Record<keyof FormData | 'desiredDate', string>>;
+
+const serviceOptions = [
+  { value: '', label: 'Odaberite uslugu' },
+  { value: 'Mali servis', label: 'Mali servis' },
+  { value: 'Veliki servis', label: 'Veliki servis' },
+  { value: 'Dijagnostika', label: 'Dijagnostika' },
+  { value: 'Kočnice', label: 'Kočnice' },
+  { value: 'Klima servis', label: 'Klima servis' },
+  { value: 'Ovjes i trap', label: 'Ovjes i trap' },
+  { value: 'Nešto drugo / Nisam siguran', label: 'Nešto drugo / Nisam siguran' },
+];
+
+const monthOptions = [
+  { value: '01', label: '01 - Siječanj' },
+  { value: '02', label: '02 - Veljača' },
+  { value: '03', label: '03 - Ožujak' },
+  { value: '04', label: '04 - Travanj' },
+  { value: '05', label: '05 - Svibanj' },
+  { value: '06', label: '06 - Lipanj' },
+  { value: '07', label: '07 - Srpanj' },
+  { value: '08', label: '08 - Kolovoz' },
+  { value: '09', label: '09 - Rujan' },
+  { value: '10', label: '10 - Listopad' },
+  { value: '11', label: '11 - Studeni' },
+  { value: '12', label: '12 - Prosinac' },
+];
+
+const pad = (value: number) => value.toString().padStart(2, '0');
+
+const createIsoDate = (date: Date) => {
+  const normalized = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return normalized.toISOString().slice(0, 10);
+};
+
+const addDays = (date: Date, days: number) => {
+  const next = new Date(date);
+  next.setDate(next.getDate() + days);
+  return next;
+};
+
+const getDaysInMonth = (year: number, month: number) => new Date(year, month, 0).getDate();
+
+const isValidCalendarDate = (day: number, month: number, year: number) => {
+  const test = new Date(year, month - 1, day);
+  return test.getFullYear() === year && test.getMonth() === month - 1 && test.getDate() === day;
+};
+
+const toDateParts = (date: Date): DateParts => ({
+  day: pad(date.getDate()),
+  month: pad(date.getMonth() + 1),
+  year: String(date.getFullYear()),
+});
+
+const formatDisplayDate = ({ day, month, year }: DateParts) => {
+  if (!day || !month || !year) return 'Nije odabran datum';
+  return `${day}/${month}/${year}`;
+};
+
 export default function Contact() {
-  const dateTemplate = 'dd/mm/yyyy';
-  const [desiredDate, setDesiredDate] = useState(dateTemplate);
-  const [dateError, setDateError] = useState('');
-  const currentYear = new Date().getFullYear();
+  const today = useMemo(() => new Date(), []);
+  const currentYear = today.getFullYear();
   const maxYear = currentYear + 2;
+  const minDate = useMemo(() => createIsoDate(today), [today]);
+  const maxDate = useMemo(() => {
+    const next = new Date(today);
+    next.setFullYear(next.getFullYear() + 2);
+    return createIsoDate(next);
+  }, [today]);
 
-  const clampRange = (value: number, min: number, max: number) => {
-    return Math.min(max, Math.max(min, value));
+  const [formData, setFormData] = useState<FormData>({
+    fullName: '',
+    phone: '',
+    carModel: '',
+    service: '',
+    message: '',
+  });
+  const [dateParts, setDateParts] = useState<DateParts>({ day: '', month: '', year: '' });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [submitMessage, setSubmitMessage] = useState('');
+
+  const yearOptions = useMemo(
+    () => Array.from({ length: maxYear - currentYear + 1 }, (_, index) => String(currentYear + index)),
+    [currentYear, maxYear]
+  );
+
+  const dayOptions = useMemo(() => {
+    const fallbackMonth = today.getMonth() + 1;
+    const fallbackYear = today.getFullYear();
+    const month = Number(dateParts.month || fallbackMonth);
+    const year = Number(dateParts.year || fallbackYear);
+    const totalDays = getDaysInMonth(year, month);
+    return Array.from({ length: totalDays }, (_, index) => pad(index + 1));
+  }, [dateParts.month, dateParts.year, today]);
+
+  const inputBaseClass =
+    'w-full rounded-xl border bg-zinc-950 px-4 py-3.5 text-white transition-colors outline-none placeholder:text-zinc-500 focus:border-red-500';
+
+  const updateField = <K extends keyof FormData>(field: K, value: FormData[K]) => {
+    setFormData((current) => ({ ...current, [field]: value }));
+    setErrors((current) => ({ ...current, [field]: undefined }));
+    setSubmitMessage('');
   };
 
-  const isValidCalendarDate = (day: number, month: number, year: number) => {
-    const test = new Date(year, month - 1, day);
-    return test.getFullYear() === year && test.getMonth() === month - 1 && test.getDate() === day;
-  };
+  const updateDatePart = (field: keyof DateParts, value: string) => {
+    setDateParts((current) => {
+      const next = { ...current, [field]: value };
+      const month = Number(next.month || today.getMonth() + 1);
+      const year = Number(next.year || today.getFullYear());
+      const maxDay = getDaysInMonth(year, month);
 
-  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    let digits = event.target.value.replace(/\D/g, '').slice(0, 8);
-    let dayPart = digits.slice(0, 2);
-    let monthPart = digits.slice(2, 4);
-    let yearPart = digits.slice(4, 8);
-
-    if (dayPart.length === 2) {
-      const day = clampRange(parseInt(dayPart, 10), 1, 31);
-      dayPart = day.toString().padStart(2, '0');
-    }
-
-    if (monthPart.length === 2) {
-      const month = clampRange(parseInt(monthPart, 10), 1, 12);
-      monthPart = month.toString().padStart(2, '0');
-    }
-
-    if (yearPart.length === 4) {
-      const year = clampRange(parseInt(yearPart, 10), currentYear, maxYear);
-      yearPart = year.toString();
-    }
-
-    digits = `${dayPart}${monthPart}${yearPart}`;
-
-    const formatted = dateTemplate.split('');
-    const editableIndexes = [0, 1, 3, 4, 6, 7, 8, 9];
-
-    editableIndexes.forEach((index, i) => {
-      if (digits[i]) {
-        formatted[index] = digits[i];
+      if (next.day && Number(next.day) > maxDay) {
+        next.day = pad(maxDay);
       }
+
+      return next;
     });
 
-    setDesiredDate(formatted.join(''));
-    setDateError('');
-    event.target.setCustomValidity('');
+    setErrors((current) => ({ ...current, desiredDate: undefined }));
+    setSubmitMessage('');
   };
 
-  const handleDateBlur = (event: FocusEvent<HTMLInputElement>) => {
-    if (desiredDate === dateTemplate) {
-      setDateError('');
-      event.target.setCustomValidity('');
+  const applyPresetDate = (date: Date) => {
+    setDateParts(toDateParts(date));
+    setErrors((current) => ({ ...current, desiredDate: undefined }));
+    setSubmitMessage('');
+  };
+
+  const clearDate = () => {
+    setDateParts({ day: '', month: '', year: '' });
+    setErrors((current) => ({ ...current, desiredDate: undefined }));
+    setSubmitMessage('');
+  };
+
+  const validateForm = () => {
+    const nextErrors: FormErrors = {};
+    const digitsOnlyPhone = formData.phone.replace(/\D/g, '');
+    const hasAnyDateValue = Boolean(dateParts.day || dateParts.month || dateParts.year);
+    const hasFullDate = Boolean(dateParts.day && dateParts.month && dateParts.year);
+
+    if (formData.fullName.trim().length < 3) {
+      nextErrors.fullName = 'Unesite ime i prezime.';
+    }
+
+    if (digitsOnlyPhone.length < 8) {
+      nextErrors.phone = 'Unesite ispravan broj telefona.';
+    }
+
+    if (formData.carModel.trim().length < 2) {
+      nextErrors.carModel = 'Upišite marku i model vozila.';
+    }
+
+    if (!formData.service) {
+      nextErrors.service = 'Odaberite vrstu usluge.';
+    }
+
+    if (hasAnyDateValue && !hasFullDate) {
+      nextErrors.desiredDate = 'Odaberite dan, mjesec i godinu.';
+    }
+
+    if (hasFullDate) {
+      const day = Number(dateParts.day);
+      const month = Number(dateParts.month);
+      const year = Number(dateParts.year);
+
+      if (!isValidCalendarDate(day, month, year)) {
+        nextErrors.desiredDate = 'Odabrani datum nije valjan.';
+      } else {
+        const isoDate = `${dateParts.year}-${dateParts.month}-${dateParts.day}`;
+        if (isoDate < minDate || isoDate > maxDate) {
+          nextErrors.desiredDate = 'Odaberite datum između danas i 2 godine unaprijed.';
+        }
+      }
+    }
+
+    return nextErrors;
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const nextErrors = validateForm();
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
+      setSubmitMessage('Provjerite označena polja i pokušajte ponovno.');
       return;
     }
 
-    const match = desiredDate.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-    if (!match) {
-      const message = 'Unesite datum u formatu dd/mm/yyyy.';
-      setDateError(message);
-      event.target.setCustomValidity(message);
-      return;
-    }
+    const emailBody = [
+      `Ime i prezime: ${formData.fullName}`,
+      `Telefon: ${formData.phone}`,
+      `Marka i model vozila: ${formData.carModel}`,
+      `Vrsta usluge: ${formData.service}`,
+      `Željeni datum: ${
+        dateParts.day && dateParts.month && dateParts.year ? formatDisplayDate(dateParts) : 'Nije naveden'
+      }`,
+      '',
+      'Poruka / opis kvara:',
+      formData.message.trim() || 'Nema dodatne poruke.',
+    ].join('\n');
 
-    const day = parseInt(match[1], 10);
-    const month = parseInt(match[2], 10);
-    const year = parseInt(match[3], 10);
+    const subject = encodeURIComponent(`Upit s web stranice - ${formData.service}`);
+    const body = encodeURIComponent(emailBody);
 
-    if (year < currentYear || year > maxYear) {
-      const message = `Godina mora biti između ${currentYear}. i ${maxYear}.`;
-      setDateError(message);
-      event.target.setCustomValidity(message);
-      return;
-    }
-
-    if (!isValidCalendarDate(day, month, year)) {
-      const message = 'Uneseni datum nije valjan.';
-      setDateError(message);
-      event.target.setCustomValidity(message);
-      return;
-    }
-
-    setDateError('');
-    event.target.setCustomValidity('');
+    setSubmitMessage('Otvara se vaš email s popunjenim podacima.');
+    window.location.href = `mailto:hidrokopdoo@gmail.com?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -108,26 +240,31 @@ export default function Contact() {
         </div>
 
         <div className="mx-auto flex max-w-6xl flex-col gap-12 lg:flex-row">
-          {/* Contact Info */}
           <div data-gsap="reveal" data-x="-30" className="space-y-8 lg:w-1/3">
             <div className="h-full space-y-8 rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
               <div className="flex items-start gap-4">
-                <div className="h-12 w-12 shrink-0 rounded-full bg-zinc-800 text-red-500 flex items-center justify-center">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-red-500">
                   <Phone className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="mb-1 font-semibold text-white">Telefon</h4>
-                  <a href="tel:051642111" className="text-zinc-400 transition-colors hover:text-red-500">051 642 111</a>
+                  <h3 className="mb-1 font-semibold text-white">Telefon</h3>
+                  <a href="tel:051642111" className="text-zinc-400 transition-colors hover:text-red-500">
+                    051 642 111
+                  </a>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="h-12 w-12 shrink-0 rounded-full bg-zinc-800 text-red-500 flex items-center justify-center">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-red-500">
                   <MapPin className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="mb-1 font-semibold text-white">Adresa</h4>
-                  <p className="text-zinc-400">Zametska ulica 28<br />51000, Rijeka</p>
+                  <h3 className="mb-1 font-semibold text-white">Adresa</h3>
+                  <p className="text-zinc-400">
+                    Zametska ulica 28
+                    <br />
+                    51000, Rijeka
+                  </p>
                   <a
                     href="https://www.google.com/maps/search/?api=1&query=Hidrokop+-+HP+Auto,+Rijeka"
                     target="_blank"
@@ -140,11 +277,11 @@ export default function Contact() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="h-12 w-12 shrink-0 rounded-full bg-zinc-800 text-red-500 flex items-center justify-center">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-red-500">
                   <Clock className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="mb-1 font-semibold text-white">Radno vrijeme</h4>
+                  <h3 className="mb-1 font-semibold text-white">Radno vrijeme</h3>
                   <p className="text-zinc-400">Pon - Pet: 08:00 - 16:00</p>
                   <p className="text-zinc-400">Subota: 08:00 - 14:00</p>
                   <p className="mt-1 text-sm text-zinc-500">Nedjelja: Zatvoreno</p>
@@ -152,11 +289,11 @@ export default function Contact() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="h-12 w-12 shrink-0 rounded-full bg-zinc-800 text-red-500 flex items-center justify-center">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-red-500">
                   <Mail className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="mb-1 font-semibold text-white">Email</h4>
+                  <h3 className="mb-1 font-semibold text-white">Email</h3>
                   <a href="mailto:hidrokopdoo@gmail.com" className="text-zinc-400 transition-colors hover:text-red-500">
                     hidrokopdoo@gmail.com
                   </a>
@@ -165,69 +302,202 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Contact Form */}
           <div data-gsap="reveal" data-x="30" data-delay="0.04" className="lg:w-2/3">
-            <form className="space-y-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-8" onSubmit={(e) => e.preventDefault()}>
-              <h3 className="mb-6 text-2xl font-bold text-white">Zatraži termin ili ponudu</h3>
-
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium text-zinc-400">Ime i prezime *</label>
-                  <input type="text" id="name" required className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-white transition-colors focus:border-red-500 focus:outline-none" placeholder="Vaše ime" />
-                </div>
-                <div className="space-y-2">
-                  <label htmlFor="phone" className="text-sm font-medium text-zinc-400">Broj telefona *</label>
-                  <input type="tel" id="phone" required className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-white transition-colors focus:border-red-500 focus:outline-none" placeholder="051 642 111" />
+            <form className="space-y-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-8" onSubmit={handleSubmit} noValidate>
+              <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold text-white">Zatraži termin ili ponudu</h3>
+                  <p className="mt-1 text-sm text-zinc-400">Forma otvara vaš email s već popunjenim podacima.</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div className="space-y-2">
-                  <label htmlFor="car" className="text-sm font-medium text-zinc-400">Marka i model vozila *</label>
-                  <input type="text" id="car" required className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-white transition-colors focus:border-red-500 focus:outline-none" placeholder="Npr. VW Golf 7 1.6 TDI" />
+                  <label htmlFor="fullName" className="text-sm font-medium text-zinc-400">
+                    Ime i prezime *
+                  </label>
+                  <input
+                    type="text"
+                    id="fullName"
+                    value={formData.fullName}
+                    onChange={(event) => updateField('fullName', event.target.value)}
+                    className={`${inputBaseClass} ${errors.fullName ? 'border-red-500' : 'border-zinc-800'}`}
+                    placeholder="Vaše ime i prezime"
+                    autoComplete="name"
+                  />
+                  {errors.fullName ? <p className="text-xs text-red-500">{errors.fullName}</p> : null}
                 </div>
+
                 <div className="space-y-2">
-                  <label htmlFor="service" className="text-sm font-medium text-zinc-400">Vrsta usluge</label>
-                  <select id="service" className="w-full appearance-none rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-white transition-colors focus:border-red-500 focus:outline-none">
-                    <option value="mali-servis">Mali servis</option>
-                    <option value="veliki-servis">Veliki servis</option>
-                    <option value="dijagnostika">Dijagnostika</option>
-                    <option value="kocnice">Kočnice</option>
-                    <option value="klima">Klima servis</option>
-                    <option value="drugo">Nešto drugo / Ne znam</option>
+                  <label htmlFor="phone" className="text-sm font-medium text-zinc-400">
+                    Broj telefona *
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    value={formData.phone}
+                    onChange={(event) => updateField('phone', event.target.value)}
+                    className={`${inputBaseClass} ${errors.phone ? 'border-red-500' : 'border-zinc-800'}`}
+                    placeholder="091 123 4567"
+                    autoComplete="tel"
+                  />
+                  {errors.phone ? <p className="text-xs text-red-500">{errors.phone}</p> : null}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div className="space-y-2">
+                  <label htmlFor="carModel" className="text-sm font-medium text-zinc-400">
+                    Marka i model vozila *
+                  </label>
+                  <input
+                    type="text"
+                    id="carModel"
+                    value={formData.carModel}
+                    onChange={(event) => updateField('carModel', event.target.value)}
+                    className={`${inputBaseClass} ${errors.carModel ? 'border-red-500' : 'border-zinc-800'}`}
+                    placeholder="Npr. VW Golf 7 1.6 TDI"
+                  />
+                  {errors.carModel ? <p className="text-xs text-red-500">{errors.carModel}</p> : null}
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="service" className="text-sm font-medium text-zinc-400">
+                    Vrsta usluge *
+                  </label>
+                  <select
+                    id="service"
+                    value={formData.service}
+                    onChange={(event) => updateField('service', event.target.value)}
+                    className={`${inputBaseClass} appearance-none ${errors.service ? 'border-red-500' : 'border-zinc-800'}`}
+                  >
+                    {serviceOptions.map((option) => (
+                      <option key={option.label} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.service ? <p className="text-xs text-red-500">{errors.service}</p> : null}
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-3">
+                  <label className="text-sm font-medium text-zinc-400">Željeni datum (opcionalno)</label>
+                </div>
+
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  <select
+                    value={dateParts.day}
+                    onChange={(event) => updateDatePart('day', event.target.value)}
+                    className={`${inputBaseClass} appearance-none ${errors.desiredDate ? 'border-red-500' : 'border-zinc-800'}`}
+                  >
+                    <option value="">Dan</option>
+                    {dayOptions.map((day) => (
+                      <option key={day} value={day}>
+                        {day}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={dateParts.month}
+                    onChange={(event) => updateDatePart('month', event.target.value)}
+                    className={`${inputBaseClass} appearance-none ${errors.desiredDate ? 'border-red-500' : 'border-zinc-800'}`}
+                  >
+                    <option value="">Mjesec</option>
+                    {monthOptions.map((month) => (
+                      <option key={month.value} value={month.value}>
+                        {month.label}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={dateParts.year}
+                    onChange={(event) => updateDatePart('year', event.target.value)}
+                    className={`${inputBaseClass} appearance-none ${errors.desiredDate ? 'border-red-500' : 'border-zinc-800'}`}
+                  >
+                    <option value="">Godina</option>
+                    {yearOptions.map((year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
                   </select>
                 </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => applyPresetDate(today)}
+                    className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 transition hover:border-red-500 hover:text-white"
+                  >
+                    Danas
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => applyPresetDate(addDays(today, 1))}
+                    className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 transition hover:border-red-500 hover:text-white"
+                  >
+                    Sutra
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => applyPresetDate(addDays(today, 7))}
+                    className="rounded-full border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 transition hover:border-red-500 hover:text-white"
+                  >
+                    Za 7 dana
+                  </button>
+                  {(dateParts.day || dateParts.month || dateParts.year) ? (
+                    <button
+                      type="button"
+                      onClick={clearDate}
+                      className="rounded-full border border-zinc-800 px-3 py-1.5 text-xs text-zinc-500 transition hover:border-zinc-600 hover:text-zinc-300"
+                    >
+                      Očisti datum
+                    </button>
+                  ) : null}
+                </div>
+
+                {dateParts.day && dateParts.month && dateParts.year ? (
+                  <p className="text-sm text-zinc-500">Odabrano: {formatDisplayDate(dateParts)}</p>
+                ) : (
+                  <p className="text-sm text-zinc-500">Datum nije zabilježen.</p>
+                )}
+                {errors.desiredDate ? <p className="text-xs text-red-500">{errors.desiredDate}</p> : null}
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="date" className="text-sm font-medium text-zinc-400">Željeni datum (opcionalno)</label>
-                <input
-                  type="text"
-                  id="date"
-                  inputMode="numeric"
-                  value={desiredDate}
-                  onChange={handleDateChange}
-                  onBlur={handleDateBlur}
-                  maxLength={10}
-                  aria-invalid={dateError ? 'true' : 'false'}
-                  className={`w-full rounded-lg border bg-zinc-950 px-4 py-3 text-white transition-colors focus:outline-none ${
-                    dateError ? 'border-red-500 focus:border-red-500' : 'border-zinc-800 focus:border-red-500'
-                  }`}
-                />
-                {dateError && <p className="text-xs text-red-500">{dateError}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="message" className="text-sm font-medium text-zinc-400">Poruka / Opis kvara</label>
+                <label htmlFor="message" className="text-sm font-medium text-zinc-400">
+                  Poruka / Opis kvara
+                </label>
                 <textarea
                   id="message"
-                  rows={4}
-                  className="w-full resize-none rounded-lg border border-zinc-800 bg-zinc-950 px-4 py-3 text-white transition-colors focus:border-red-500 focus:outline-none"
-                  placeholder="Opišite problem ili ostavite dodatnu napomenu..."
-                ></textarea>
+                  rows={5}
+                  value={formData.message}
+                  onChange={(event) => updateField('message', event.target.value)}
+                  className={`${inputBaseClass} resize-none border-zinc-800`}
+                  placeholder="Opišite problem, simptome ili bilo kakvu dodatnu napomenu..."
+                />
               </div>
 
-              <button type="submit" className="flex w-full items-center justify-center gap-2 rounded-lg bg-red-600 py-4 font-medium text-white transition-colors hover:bg-red-700">
+              {submitMessage ? (
+                <div
+                  className={`rounded-xl border px-4 py-3 text-sm ${
+                    Object.keys(errors).length
+                      ? 'border-red-500/35 bg-red-500/10 text-red-200'
+                      : 'border-zinc-700 bg-zinc-950 text-zinc-300'
+                  }`}
+                >
+                  {submitMessage}
+                </div>
+              ) : null}
+
+              <button
+                type="submit"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 py-4 font-medium text-white transition-colors hover:bg-red-700"
+              >
                 <Send className="h-5 w-5" />
                 Pošalji upit
               </button>

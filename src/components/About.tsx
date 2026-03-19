@@ -11,9 +11,9 @@ export default function About() {
   ];
 
   return (
-    <section id="o-nama" className="relative overflow-hidden bg-[#09090b] pb-12 pt-24 md:py-24">
+    <section id="o-nama" className="relative overflow-hidden bg-[#09090b] pb-4 pt-20 md:py-24">
       <div className="container relative mx-auto px-6">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16">
+        <div className="flex flex-col gap-6 md:gap-10 lg:flex-row lg:items-center lg:gap-16">
           <div data-gsap="reveal" data-x="50" className="w-full lg:order-2 lg:w-1/2">
             <SectionHeading
               title="Pouzdan partner"

@@ -17,8 +17,8 @@ export default function About() {
         <div className="flex flex-col gap-6 md:gap-10 lg:flex-row lg:items-center lg:gap-16">
           <div data-gsap="reveal" data-x="50" className="w-full lg:order-2 lg:w-1/2">
             <SectionHeading
-              title="Pouzdan partner"
-              subtitle="na cesti"
+              title="Servis kojem"
+              subtitle="vjerujete"
               className="mb-6 max-w-[560px]"
               titleClassName="md:text-[4.5rem]"
             />

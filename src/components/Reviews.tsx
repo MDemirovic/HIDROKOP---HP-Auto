@@ -49,10 +49,10 @@ export default function Reviews() {
         <div data-gsap="reveal" data-y="20" className="mx-auto mb-16 max-w-2xl text-center">
           <SectionHeading
             align="center"
-            title="Šta kažu"
-            subtitle="o nama"
+            title="Povjerenje"
+            subtitle="klijenata"
             inline
-            description="Naša najveća reklama su zadovoljni klijenti. Pročitajte njihova iskustva."
+            description="Najbolja potvrda našeg rada su iskustva zadovoljnih klijenata."
             className="max-w-[760px]"
           />
         </div>
